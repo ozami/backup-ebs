@@ -1,0 +1,14 @@
+{
+    "name": "coroq/ebs-backup",
+    "description": "Backing up AWS EBS.",
+    "require": {
+        "aws/aws-sdk-php": "^3.19"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ozawa Masayuki",
+            "email": "ozawa@coroq.com"
+        }
+    ]
+}
