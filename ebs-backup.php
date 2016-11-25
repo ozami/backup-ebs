@@ -11,7 +11,7 @@ function main()
         "InstanceIds" => ["i-507dbfce"],
     ]);
     $vols = $reply["Reservations"][0]["Instances"][0]["BlockDeviceMappings"];
-    print_r($vols);
+    //print_r($vols);
     foreach ($vols as $vol) {
         $vol_id = $vol["Ebs"]["VolumeId"];
         $reply = $ec2->createSnapshot([
@@ -28,12 +28,34 @@ function main()
         ]);
     }
     
-    $snaps = $ec2->describeSnapshots([
-        "Filters" => [
-            ["Name" => "tag:AutoDelete", "Values" => ["yes"]]
-        ]
-    ]);
-    print_r($snaps);
+    foreach ($vols as $vol) {
+        $vol_id = $vol["Ebs"]["VolumeId"];
+        echo "$vol_id\n";
+        $reply = $ec2->describeSnapshots([
+            "Filters" => [
+                ["Name" => "volume-id", "Values" => [$vol_id]],
+                ["Name" => "tag:AutoDelete", "Values" => ["yes"]]
+            ]
+        ]);
+        $snaps = $reply["Snapshots"];
+        usort($snaps, function($a, $b) {
+            if ($a["StartTime"] > $b["StartTime"]) {
+                return -1;
+            }
+            if ($a["StartTime"] < $b["StartTime"]) {
+                return 1;
+            }
+            return 0;
+        });
+        $old_snaps = array_slice($snaps, 2);
+        
+        foreach ($old_snaps as $snap) {
+            $reply = $ec2->deleteSnapshot([
+                "SnapshotId" => $snap["SnapshotId"],
+            ]);
+            print_r($reply);
+        }
+    }
 }
 
 main();
