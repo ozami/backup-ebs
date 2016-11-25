@@ -1,8 +1,13 @@
 {
     "name": "coroq/ebs-backup",
     "description": "Backing up AWS EBS.",
+    "autoload": {
+        "psr-4": {
+            "": "lib/"
+        }
+    },
     "require": {
-        "aws/aws-sdk-php": "^3.19"
+        "aws/aws-sdk-php": "^2.8"
     },
     "license": "MIT",
     "authors": [

@@ -1,8 +1,17 @@
 <?php
 
-function main()
+function main($args)
 {
     require_once __DIR__ . "/vendor/autoload.php";
+    
+    if ($args) {
+        
+    }
+    
+    $backup = new EbsBackup("test1", "ap-northeast-1");
+    $backup->run("i-507dbfce", 3);
+    
+    return;
     $ec2 = Aws\Ec2\Ec2Client::factory([
         "profile" => "test1",
         "region" => "ap-northeast-1",
@@ -58,4 +67,4 @@ function main()
     }
 }
 
-main();
+main($_SERVER["argv"]);
