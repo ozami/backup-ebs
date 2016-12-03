@@ -23,7 +23,7 @@ class EbsBackup
         foreach ($vols as $vol) {
             $name = "$instance_name-" . basename($vol["device"]) . date("-Ymd-Hi");
             $this->createSnapshot($vol["id"], $name);
-            
+            $this->deleteOldSnapshot($vol["id"], $count);
         }
     }
     
@@ -93,7 +93,7 @@ class EbsBackup
         $old_snaps = array_slice($snaps, $count);
         
         foreach ($old_snaps as $snap) {
-            $reply = $ec2->deleteSnapshot([
+            $reply = $this->ec2->deleteSnapshot([
                 "SnapshotId" => $snap["SnapshotId"],
             ]);
         }
