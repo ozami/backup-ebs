@@ -7,7 +7,8 @@
         }
     },
     "require": {
-        "aws/aws-sdk-php": "^2.8"
+        "aws/aws-sdk-php": "^2.8",
+        "ulrichsg/getopt-php": "^2.3"
     },
     "license": "MIT",
     "authors": [
